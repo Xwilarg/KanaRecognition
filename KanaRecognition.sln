@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanaRecognition", "KanaRecognition\KanaRecognition.csproj", "{45DEFD22-611C-4059-B0A1-CA2FF1AA399E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45DEFD22-611C-4059-B0A1-CA2FF1AA399E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45DEFD22-611C-4059-B0A1-CA2FF1AA399E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45DEFD22-611C-4059-B0A1-CA2FF1AA399E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45DEFD22-611C-4059-B0A1-CA2FF1AA399E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FC435C5-F67E-430A-A7F2-20F2EEB81D37}
+	EndGlobalSection
+EndGlobal
