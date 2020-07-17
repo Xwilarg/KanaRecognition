@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 
 namespace KanaRecognition
 {
@@ -14,20 +16,55 @@ namespace KanaRecognition
             Dictionary<string, string> katakana = JsonConvert.DeserializeObject<Dictionary<string, string>>("{\"ア\":\"a\",\"イ\":\"i\",\"ウ\":\"u\",\"エ\":\"e\",\"オ\":\"o\",\"カ\":\"ka\",\"キ\":\"ki\",\"ク\":\"ku\",\"ケ\":\"ke\",\"コ\":\"ko\",\"サ\":\"sa\",\"シ\":\"shi\",\"ス\":\"su\",\"セ\":\"se\",\"ソ\":\"so\",\"タ\":\"ta\",\"チ\":\"chi\",\"ツ\":\"tsu\",\"テ\":\"te\",\"ト\":\"to\",\"ナ\":\"na\",\"ニ\":\"ni\",\"ヌ\":\"nu\",\"ネ\":\"ne\",\"ノ\":\"no\",\"ハ\":\"ha\",\"ヒ\":\"hi\",\"フ\":\"fu\",\"ヘ\":\"he\",\"ホ\":\"ho\",\"マ\":\"ma\",\"ミ\":\"mi\",\"ム\":\"mu\",\"メ\":\"me\",\"モ\":\"mo\",\"ヤ\":\"ya\",\"ユ\":\"yu\",\"ヨ\":\"yo\",\"ラ\":\"ra\",\"リ\":\"ri\",\"ル\":\"ru\",\"レ\":\"re\",\"ロ\":\"ro\",\"ワ\":\"wa\",\"ヲ\":\"wo\",\"ン\":\"n\",\"ガ\":\"ga\",\"ギ\":\"gi\",\" グ\":\"gu\",\"ゲ\":\"ge\",\"ゴ\":\"go\",\"ザ\":\"za\",\"ジ\":\"ji\",\"ズ\":\"zu\",\"ゼ\":\"ze\",\"ゾ\":\"zo\",\"ダ\":\"da\",\"ヂ\":\"ji\",\"ヅ\":\"zu\",\"デ\":\"de\",\"ド\":\"do\",\"バ\":\"ba\",\"ビ\":\"bi\",\"ブ\":\"bu\",\"ベ\":\"be\",\"ボ\":\"bo\",\"パ\":\"pa\",\"ピ\":\"pi\",\"プ\":\"pu\",\"ペ\":\"pe\",\"ポ\":\"po\"}"); ;
             foreach (var s in hiragana)
             {
-                using (Image img = new Bitmap(30, 30))
+                using (Bitmap img = new Bitmap(30, 30))
                 {
                     using (Graphics g = Graphics.FromImage(img))
                     {
+                        List<List<int>> greyScale = new List<List<int>>();
                         SizeF size = g.MeasureString(s.Key, SystemFonts.DefaultFont);
                         PointF rect = new PointF(size.Width, size.Height);
-                        Console.WriteLine(size.Width + " ; " + size.Height);
 
                         g.DrawString(s.Key, SystemFonts.DefaultFont, new SolidBrush(Color.Black), rect);
 
-                        img.Save("final.png");
+                        for (int y = 0; y < img.Height; y++)
+                        {
+                            List<int> tmp = new List<int>();
+                            for (int x = 0; x < img.Width; x++)
+                            {
+                                tmp.Add(img.GetPixel(x, y).A == 0 ? 0 : 1);
+                            }
+                            greyScale.Add(tmp);
+                        }
+
+                        while (greyScale.All(x => x[0] == 0))
+                        {
+                            for (int i = 0; i < greyScale.Count; i++)
+                                greyScale[i].RemoveAt(0);
+                        }
+
+                        while (greyScale.All(x => x[^1] == 0))
+                        {
+                            for (int i = 0; i < greyScale.Count; i++)
+                                greyScale[i].RemoveAt(greyScale[i].Count - 1);
+                        }
+
+                        while (greyScale[0].All(x => x == 0))
+                            greyScale.RemoveAt(0);
+
+                        while (greyScale[^1].All(x => x == 0))
+                            greyScale.RemoveAt(greyScale.Count - 1);
+
+                        foreach (var a in greyScale)
+                        {
+                            foreach (var b in a)
+                            {
+                                Console.Write(b == 0 ? "." : "X");
+                            }
+                            Console.WriteLine();
+                        }
                     }
                 }
-                    break;
+                break;
             }
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
