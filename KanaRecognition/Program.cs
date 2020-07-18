@@ -23,9 +23,9 @@ namespace KanaRecognition
             Console.ReadKey();
         }
 
-        private static Dictionary<string, KanaDrawInfo> ParseDictionary(Dictionary<string, string> dict)
+        private static List<KanaDrawInfo> ParseDictionary(Dictionary<string, string> dict)
         {
-            Dictionary<string, KanaDrawInfo> infos = new Dictionary<string, KanaDrawInfo>();
+            List<KanaDrawInfo> infos = new List<KanaDrawInfo>();
             foreach (var s in dict)
             {
                 using (Bitmap img = new Bitmap(30, 30))
@@ -70,8 +70,9 @@ namespace KanaRecognition
                         foreach (var tmp in greyScale)
                             finalArr.AddRange(tmp);
 
-                        infos.Add(s.Key, new KanaDrawInfo
+                        infos.Add(new KanaDrawInfo
                         {
+                            kana = s.Key,
                             width = greyScale[0].Count,
                             height = greyScale.Count,
                             pixels = finalArr.ToArray()
@@ -85,6 +86,7 @@ namespace KanaRecognition
 
     public class KanaDrawInfo
     {
+        public string kana;
         public int width;
         public int height;
         public int[] pixels;
